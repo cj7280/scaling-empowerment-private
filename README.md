@@ -134,13 +134,3 @@ A good reading order:
 
 Everything else is under [`LICENSE`](LICENSE).
 
-## Citation
-
-```bibtex
-@article{ji2026scaling,
-  title   = {Scaling Empowered Agents},
-  author  = {Ji, Catherine and Myers, Vivek and Lin, Joshua and Wingate, Alexandra and Levine, Sergey and Eysenbach, Benjamin},
-  journal = {arXiv preprint arXiv:2610.13002},
-  year    = {2026}
-}
-```
