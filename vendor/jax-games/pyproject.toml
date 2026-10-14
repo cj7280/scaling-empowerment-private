@@ -38,10 +38,6 @@ play-jax-game = "jax_games.cli:main"
 play-craftax = "jax_games.envs.craftax.play_craftax:entry_point"
 play-craftax-classic = "jax_games.envs.craftax.craftax_classic.play_craftax_classic:entry_point"
 
-[project.urls]
-Homepage = "https://github.com/cj7280/jax-games"
-Issues = "https://github.com/cj7280/jax-games/issues"
-
 [tool.setuptools]
 package-dir = {"" = "src"}
 include-package-data = true

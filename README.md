@@ -125,7 +125,7 @@ A good reading order:
 - **`vendor/jax-games`**: Craftax-Classic from
   [Craftax](https://github.com/MichaelTMatthews/Craftax) at commit `4423ed7`
   (between releases 1.5.0 and 1.6.0), packaged through
-  [JAX Games](https://github.com/cj7280/jax-games) 2.0.0. MIT. Game rules,
+  [JAX Games](vendor/jax_games) 2.0.0. MIT. Game rules,
   rewards and observations are unchanged. Craftax 1.6 changes health
   and rewards, so keep this version to reproduce the paper's results exactly.
 - **VIM and LatentGCE**: the original source files are listed in each
