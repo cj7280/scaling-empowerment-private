@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 
-DEFAULT_WANDB_PROJECT = "potential_base"
+DEFAULT_WANDB_PROJECT = "empowerment-warp"
 
 
 def _write_json(path: Path, payload: Mapping[str, Any]) -> None:

@@ -36,7 +36,7 @@ def _train(args):
     elif engine == 'toy_baseline':
         from empowerment_warp.baselines.toy_baselines import run
         config = replace(config, wandb_mode=os.environ.get('WANDB_MODE', 'disabled'),
-                         wandb_project=os.environ.get('WANDB_PROJECT', 'potential_base'),
+                         wandb_project=os.environ.get('WANDB_PROJECT', 'empowerment-warp'),
                          wandb_group='', wandb_name=run_dir.name)
         if args.resume:
             config = replace(config, resume=str(run_dir))

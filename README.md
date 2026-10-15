@@ -1,7 +1,6 @@
 # empowerment-warp
 
-Code for [*Scaling Empowered Agents*](https://arxiv.org/abs/2610.13002)
-([project page](https://empowerment-geometry.github.io/scaling-empowerment/)). SEE maximizes empowerment by pairing two
+Code for *Scaling Empowered Agents*. SEE maximizes empowerment by pairing two
 policies:
 
 - a **potential policy** that moves the agent to states that are good starting
@@ -131,6 +130,4 @@ A good reading order:
 - **VIM and LatentGCE**: the original source files are listed in each
   `reference_manifest.json`, with their licences beside them.
 - **`_vendor/rendering`**: MIT. The bundled fonts keep their own licence files.
-
-Everything else is under [`LICENSE`](LICENSE).
 

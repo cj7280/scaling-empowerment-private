@@ -105,7 +105,7 @@ class ExperimentConfig:
     vim: VIMModelConfig = field(default_factory=VIMModelConfig)
     evaluation: EvaluationConfig = field(default_factory=EvaluationConfig)
     wandb_mode: str = 'disabled'
-    wandb_project: str = 'empowerment-ship'
+    wandb_project: str = 'empowerment-warp'
     wandb_group: str = ''
     wandb_name: str = ''
     resume: str = ''
@@ -246,7 +246,7 @@ def resolve_config(argv: Sequence[str] | None = None) -> ExperimentConfig:
     parser.add_argument('--eval-interval-env-steps', type=int, default=100_000)
     parser.add_argument('--media-interval-env-steps', type=int, default=500_000)
     parser.add_argument('--wandb-mode', choices=('online', 'offline', 'disabled'), default='disabled')
-    parser.add_argument('--wandb-project', default='empowerment-ship')
+    parser.add_argument('--wandb-project', default='empowerment-warp')
     parser.add_argument('--wandb-group', default='')
     parser.add_argument('--wandb-name', default='')
     parser.add_argument('--resume', default='')

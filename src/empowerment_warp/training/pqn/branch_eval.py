@@ -383,7 +383,7 @@ def write_branch_figures(run_dir: Path, env_steps: int, rollouts: list, config,
 
 
 # ----------------------------------------------------------------------------- W&B push + backfill
-# Panel names match the baseline runs' media keys (empowerment-ship/u1ildajj file paths).
+# Panel names match the baseline runs' media keys.
 WANDB_MEDIA_KEYS = {
     "craftax_branching_stills.png": "media/craftax_branching_stills",
     "craftax_branching_stats.png": "media/craftax_branching_stats",
