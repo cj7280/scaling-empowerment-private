@@ -30,9 +30,9 @@ settings:
     replay_passes: 10
   checkpoint_keep: 2
   ppo:
-    learning_rate: 0.0003
+    learning_rate: 0.001
     entropy_coefficient: 0.01
-    normalize_actor_observations: true
-    anneal_learning_rate: true
+    normalize_actor_observations: false
+    anneal_learning_rate: false
     normalization_epsilon: 1.0e-08
     normalization_clip: 10.0

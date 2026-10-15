@@ -4,8 +4,6 @@ seeds:
 - 0
 - 1
 - 2
-- 3
-- 4
 description: 'Craftax-Classic SEE reference recipe (conditional-MI classifier on branched rollouts)'
 settings:
   achieved_skill_relabel_effective_beta: 0.99
