@@ -86,7 +86,7 @@ def main(argv=None):
     if destination.exists():
         raise FileExistsError(f'will not overwrite a submission: {destination}')
     (destination / 'slurm').mkdir(parents=True)
-    for directory in ('src', 'configs', 'vendor/jax-games', 'scripts'):
+    for directory in ('src', 'configs', 'scripts'):
         shutil.copytree(root / directory, source / directory,
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc', 'texture_cache*.pbz2'))
     for filename in ('pyproject.toml', 'uv.lock'):

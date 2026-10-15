@@ -54,7 +54,7 @@ def _require_runtime(config: PotentialPQNRunConfig) -> None:
 def _make_env(config: PotentialPQNRunConfig):
     if ":" not in config.environment:
         raise ValueError(
-            f"PQN currently supports the jax-games backend only; got {config.environment!r}"
+            f"PQN supports Craftax-Classic only; got {config.environment!r}"
         )
     return PQNEnv(
         config.environment, num_envs=config.num_envs,

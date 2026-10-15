@@ -27,7 +27,3 @@ MUJOCO_LOG.TXT
 
 # Default run directory (recipes' run_dir)
 artifacts/
-
-# Generated from the shipped Craftax PNG assets
-/vendor/jax-games/src/jax_games/envs/craftax/assets/texture_cache.pbz2
-/vendor/jax-games/src/jax_games/envs/craftax/craftax_classic/assets/texture_cache_classic.pbz2

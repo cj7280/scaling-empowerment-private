@@ -43,7 +43,7 @@ def source_hashes(engine, environment, *, root=None):
                   'training/pqn/env.py', 'training/pqn/runner.py', 'training/pqn/config.py',
                   'training/pqn/checkpoint.py', 'training/pqn/logging.py', 'envs/craftax_view.py',
                   'agents/see_pqn.py', 'utils/flax_utils.py', 'utils/sampling.py',
-                  'envs/games/env.py', 'envs/wrappers.py']
+                  'envs/craftax_env.py', 'envs/wrappers.py']
     else:
         paths += ['training/sac/evaluation.py', 'utils/evaluation_metrics.py', 'envs/factory.py',
                   'media/evaluation.py',

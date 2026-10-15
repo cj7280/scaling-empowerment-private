@@ -13,5 +13,5 @@ if [[ -n "${requested_wandb_mode}" ]]; then
 fi
 unset requested_wandb_mode
 : "${PYTHON:?Set PYTHON in .env}"
-export PYTHONPATH="${project_root}/src:${project_root}/vendor/jax-games/src"
+export PYTHONPATH="${project_root}/src"
 export XLA_PYTHON_CLIENT_PREALLOCATE=false

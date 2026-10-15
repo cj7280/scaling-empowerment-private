@@ -79,7 +79,7 @@ def resolve_craftax_asset_root(asset_root: str | Path | None = None) -> Path:
     """Return the Craftax raster-asset root used by icon timeline examples."""
     from importlib.util import find_spec
     root = Path(asset_root) if asset_root is not None else (
-        Path(find_spec("jax_games").origin).parent / "envs/craftax/assets")
+        Path(find_spec("craftax").origin).parent / "craftax_classic/assets")
     if not (root / "wood.png").is_file():
         raise FileNotFoundError(f"No Craftax icons under {root}")
     return root

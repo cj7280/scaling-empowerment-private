@@ -9,10 +9,10 @@ description = "GPU-native empowerment research with MJX-Warp and JAX environment
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 dependencies = [
+  "craftax==1.5.0",
   "distrax>=0.1.7,<0.2",
   "flax>=0.12,<0.13",
   "jax[cuda12]==0.10.2",
-  "jax-games==2.0.0",
   "mujoco==3.11.0",
   "mujoco-mjx[warp]==3.11.0",
   "numpy>=2.0",
@@ -26,9 +26,6 @@ dependencies = [
   "PyYAML>=6,<7",
   "wandb>=0.22,<0.23",
 ]
-
-[tool.uv.sources]
-jax-games = { path = "vendor/jax-games" }
 
 [project.optional-dependencies]
 test = [

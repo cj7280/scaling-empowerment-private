@@ -1,4 +1,4 @@
-"""Explicit-reset batched adapter for the filtered JAX Games registry."""
+"""Batched Craftax-Classic with explicit resets and caller-visible terminal observations."""
 
 from __future__ import annotations
 
@@ -6,9 +6,9 @@ from typing import Any, NamedTuple
 
 import jax
 import jax.numpy as jnp
-from jax_games.vector import make_jax_game_vector_fns
+from craftax.craftax_classic.envs.craftax_symbolic_env import CraftaxClassicSymbolicEnvNoAutoReset
 
-from empowerment_warp.envs.games.registry import make_game
+ENVIRONMENTS = {"craftax:classic-symbolic": CraftaxClassicSymbolicEnvNoAutoReset}
 
 
 class State(NamedTuple):
@@ -22,8 +22,8 @@ class State(NamedTuple):
     info: Any
 
 
-class JaxGameBatchEnv:
-    """Vectorized pure-JAX game with caller-visible terminal observations."""
+class CraftaxBatchEnv:
+    """Vectorized Craftax; the caller resets finished lanes with `where_done`."""
 
     def __init__(self, name: str, *, num_envs: int, episode_length: int | None = None):
         if num_envs <= 0:
@@ -33,10 +33,13 @@ class JaxGameBatchEnv:
         self.name = name
         self.num_envs = int(num_envs)
         self.episode_length = episode_length
-        self.game = make_game(name)
+        if name not in ENVIRONMENTS:
+            raise ValueError(f"unsupported environment {name!r}; available: {', '.join(ENVIRONMENTS)}")
+        self.game = ENVIRONMENTS[name]()
         self.params = self.game.default_params
         self.action_size = int(self.game.num_actions)
-        self._vector = make_jax_game_vector_fns(self.game, self.params, jit=False)
+        self.reset_many = jax.vmap(lambda key: self.game.reset(key, self.params))
+        self.step_many = jax.vmap(lambda key, state, action: self.game.step(key, state, action, self.params))
         shape_key = jax.ShapeDtypeStruct((2,), jnp.uint32)
 
         def scalar_info(key: jax.Array) -> Any:
@@ -58,7 +61,7 @@ class JaxGameBatchEnv:
 
     def _reset_impl(self, keys: jax.Array) -> State:
         next_keys, reset_keys = jax.vmap(jax.random.split)(keys).transpose((1, 0, 2))
-        obs, game_state = self._vector.reset(reset_keys)
+        obs, game_state = self.reset_many(reset_keys)
         return State(
             game_state=game_state,
             obs=obs,
@@ -77,11 +80,7 @@ class JaxGameBatchEnv:
         split_keys = jax.vmap(jax.random.split)(state.rng)
         next_keys = split_keys[:, 0]
         step_keys = split_keys[:, 1]
-        obs, game_state, reward, done, info = self._vector.step(
-            step_keys,
-            state.game_state,
-            actions,
-        )
+        obs, game_state, reward, done, info = self.step_many(step_keys, state.game_state, actions)
         step_count = state.step_count + 1
         if self.episode_length is None:
             truncated = jnp.zeros_like(done, dtype=jnp.bool_)

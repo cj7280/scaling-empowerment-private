@@ -11,7 +11,7 @@ shift 3
 [[ -f "${source_root}/src/empowerment_warp/cli.py" ]] || exit 2
 [[ -f "${config}" ]] || exit 2
 if [[ "${PREFLIGHT_ONLY:-0}" == 1 ]]; then exit 0; fi
-export PYTHONPATH="${source_root}/src:${source_root}/vendor/jax-games/src"
+export PYTHONPATH="${source_root}/src"
 export XLA_PYTHON_CLIENT_PREALLOCATE=false
 export JAX_PLATFORMS=cuda
 export MUJOCO_GL="${MUJOCO_GL:-egl}"

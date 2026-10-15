@@ -3,7 +3,7 @@
 import jax
 import jax.numpy as jnp
 
-from empowerment_warp.envs.games import JaxGameBatchEnv
+from empowerment_warp.envs.craftax_env import CraftaxBatchEnv
 from empowerment_warp.envs.wrappers import FlatObservationEnv
 
 
@@ -11,16 +11,13 @@ class PQNEnv(FlatObservationEnv):
     def __init__(self, name, *, num_envs, episode_length, reset_ratio=16):
         if reset_ratio < 1:
             raise ValueError("reset_ratio must be positive")
-        super().__init__(JaxGameBatchEnv(name, num_envs=num_envs, episode_length=episode_length))
+        super().__init__(CraftaxBatchEnv(name, num_envs=num_envs, episode_length=episode_length))
         self.reset_ratio = int(reset_ratio) if name.startswith('craftax:') else 1
         while self.reset_ratio > 1 and num_envs % self.reset_ratio:
             self.reset_ratio -= 1
         self.achievement_columns = ()
         if name.startswith('craftax:'):
-            if 'classic' in name:
-                from jax_games.envs.craftax.craftax_classic.constants import Achievement
-            else:
-                from jax_games.envs.craftax.constants import Achievement
+            from craftax.craftax_classic.constants import Achievement
             self.achievement_columns = tuple(
                 (int(a.value), f'Achievements/{a.name.lower()}') for a in Achievement
             )
@@ -48,7 +45,7 @@ class PQNEnv(FlatObservationEnv):
         count = self.num_envs // self.reset_ratio
         split = jax.vmap(jax.random.split)(keys)
         reset_keys = split[:, 1]
-        obs, game_state = self.env._vector.reset(reset_keys[:count])
+        obs, game_state = self.env.reset_many(reset_keys[:count])
         take = jnp.minimum(jnp.arange(self.num_envs) // self.reset_ratio, count - 1)
         done = state.terminated | state.truncated
         choice_key = jax.random.fold_in(reset_keys[0], 0xC0FFEE)

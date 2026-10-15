@@ -121,12 +121,9 @@ A good reading order:
 - **Ant and AntSoccer models and tasks**: from
   [OGBench](https://github.com/seohongpark/ogbench). MIT,
   [`envs/locomotion/LICENSE`](src/empowerment_warp/envs/locomotion/LICENSE).
-- **`vendor/jax-games`**: Craftax-Classic from
-  [Craftax](https://github.com/MichaelTMatthews/Craftax) at commit `4423ed7`
-  (between releases 1.5.0 and 1.6.0), packaged through
-  [JAX Games](vendor/jax_games) 2.0.0. MIT. Game rules,
-  rewards and observations are unchanged. Craftax 1.6 changes health
-  and rewards, so keep this version to reproduce the paper's results exactly.
+- **Craftax-Classic**: from the `craftax` package (Matthews et al.), pinned to
+  1.5.0; 1.6 changes health and rewards, so keep 1.5.0 to reproduce the paper's
+  results exactly.
 - **VIM and LatentGCE**: the original source files are listed in each
   `reference_manifest.json`, with their licences beside them.
 - **`_vendor/rendering`**: MIT. The bundled fonts keep their own licence files.

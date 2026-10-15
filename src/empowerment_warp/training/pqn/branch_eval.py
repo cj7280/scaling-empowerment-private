@@ -157,7 +157,7 @@ class NativeScalarEvalEnv:
         self._fixed_reset_seed = config.eval_fixed_reset_seed
         self._state = None
         self._step = jax.jit(self._env.step)
-        from jax_games.envs.craftax.craftax_classic.renderer import render_craftax_pixels
+        from craftax.craftax_classic.renderer import render_craftax_pixels
         pixels = {"agent": 7, "img": 16, "human": 64}[config.eval_render_block_pixel_size]
         self._render = jax.jit(lambda state: render_craftax_pixels(state, block_pixel_size=pixels))
 

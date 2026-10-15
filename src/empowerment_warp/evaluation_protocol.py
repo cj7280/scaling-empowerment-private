@@ -19,7 +19,7 @@ def evaluation_cadence(environment):
 
 def evaluation_keys(environment, seed, target_step):
     """Stable across methods; independent across environments, seeds and checkpoints."""
-    index = (tuple(PRESETS) + ('craftax:classic-symbolic', 'craftax:symbolic')).index(environment)
+    index = (tuple(PRESETS) + ('craftax:classic-symbolic',)).index(environment)
     key = jax.random.PRNGKey(20261004)
     for value in (index, int(seed), int(target_step) & 0xffffffff, int(target_step) >> 32):
         key = jax.random.fold_in(key, value)
