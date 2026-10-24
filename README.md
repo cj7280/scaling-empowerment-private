@@ -12,13 +12,23 @@ trains with recurrent PQN. The VIM and LatentGCE baselines are included.
 
 ## Quick start
 
-You need an NVIDIA GPU.
+Use Linux with an NVIDIA GPU and a driver compatible with CUDA 12.
+The project uses Python 3.11–3.13 and a locked dependency set managed by
+[uv](https://docs.astral.sh/uv/getting-started/installation/). Use an up-to-date uv
+release and the latest security patch of your chosen Python version.
 
 ```bash
-uv sync --extra test
-cp .env.example .env        # then set PYTHON (the .venv interpreter), RUN_ROOT, Slurm and W&B
+uv sync --locked --extra test
+cp .env.example .env
+```
 
-# Print a resolved recipe, then train one seed.
+Set `PYTHON` in `.env` to the absolute path of `.venv/bin/python`. W&B logging
+defaults to offline mode. Configure `RUN_ROOT` and the `SLURM_*` settings if you
+use Slurm.
+
+Inspect the resolved configuration, then train one seed:
+
+```bash
 bash scripts/run.sh resolve --config configs/ant/see.yaml
 bash scripts/run.sh train --config configs/ant/see.yaml --seed 0 --run-dir artifacts/ant-see-0
 ```
@@ -33,14 +43,14 @@ evaluations.
 To run the tests on a GPU:
 
 ```bash
-source scripts/env.sh && "$PYTHON" -m pytest -q tests
+uv run --locked --extra test python -m pytest -q tests
 ```
 
 ## Recipes
 
 [`configs/<environment>/<name>.yaml`](configs) holds every scientific setting.
-`see.yaml` is the full recipe for each environment. The other files extend it and
-list only what they change.
+`see.yaml` defines SEE for each main environment. SEE ablations extend that
+recipe. VIM and LatentGCE have separate configurations.
 
 | Recipe | Change |
 |---|---|
@@ -58,34 +68,47 @@ The `ant` environment includes the AntSoccer ball and arena.
 ## Evaluation
 
 ```bash
-bash scripts/run.sh evaluate artifacts/ant-see-0 --output artifacts/ant-see-0/eval
-bash scripts/run.sh branch-media artifacts/ant-see-0 --output artifacts/ant-see-0/media   # skill-branch video
+bash scripts/run.sh evaluate artifacts/ant-see-0 --output artifacts/ant-see-0-eval
+bash scripts/run.sh branch-media artifacts/ant-see-0 --output artifacts/ant-see-0-media
 ```
 
-Training also evaluates on a fixed schedule. Each evaluation runs 128 fresh
-environments. Every episode takes 100 potential-policy actions, then switches to
-a freshly sampled skill:
+Use an output directory outside the source run. `branch-media` renders skill
+branches for continuous SEE checkpoints.
+
+Training also evaluates on a fixed schedule. SEE evaluation starts from 128 fresh
+worlds, takes 100 potential-policy actions, then switches to a freshly sampled
+skill:
 
 | | Skill actions | Reported |
 |---|---|---|
 | Continuous environments | 300 | coverage and distance |
 | Craftax | up to 900 | achievements |
 
-Reset and action keys are matched across methods.
+Continuous VIM and LatentGCE evaluation runs their single controller for 100
+actions. Reset and action keys are matched across methods for the same training
+seed and evaluation target.
 
 ## Slurm
 
+Set `SLURM_MEM` and `SLURM_TIME` in `.env` for the selected workload, or pass
+`--mem` and `--time` explicitly. Preview a bounded submission before launching:
+
 ```bash
-# A short run first.
-bash scripts/submit.sh --config configs/ant/see.yaml --seed 0 --max-chunks 256 --mem 13G --time 00:30:00
-# Then the full run, citing the short run's evaluation outputs.
-bash scripts/submit.sh --config configs/ant/see.yaml --evaluation-evidence evidence.json --mem 13G --time 03:30:00
+bash scripts/submit.sh --config configs/ant/see.yaml --seed 0 --max-chunks 1 --dry-run
+```
+
+Remove `--dry-run` to submit. For a full run, supply evaluation evidence from the
+same recipe and code. Replace the example path with your evidence file:
+
+```bash
+bash scripts/submit.sh --config configs/ant/see.yaml --evaluation-evidence /path/to/evidence.json --dry-run
 ```
 
 `submit.sh` freezes a copy of the source and submits the recipe's seeds as one
 array; `--seed N` submits a single seed and `--dry-run` checks without submitting.
-A full-length run requires `--evaluation-evidence`, a file listing the evaluation
-outputs of a short run of the same code. The format and checks are in
+A full-length run requires `--evaluation-evidence`, a file listing matching
+evaluation outputs. A one-chunk run alone need not produce all required evidence.
+The format and checks are in
 [`evaluation_checks.py`](src/empowerment_warp/evaluation_checks.py).
 
 ## Code
@@ -122,8 +145,7 @@ A good reading order:
   [OGBench](https://github.com/seohongpark/ogbench). MIT,
   [`envs/locomotion/LICENSE`](src/empowerment_warp/envs/locomotion/LICENSE).
 - **Craftax-Classic**: from the `craftax` package (Matthews et al.), pinned to
-  1.5.0; 1.6 changes health and rewards, so keep 1.5.0 to reproduce the paper's
-  results exactly.
+  1.5.0 in the project dependencies.
 - **VIM and LatentGCE**: the original source files are listed in each
   `reference_manifest.json`, with their licences beside them.
 - **`_vendor/rendering`**: MIT. The bundled fonts keep their own licence files.
